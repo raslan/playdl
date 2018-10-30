@@ -1,6 +1,6 @@
 #!/bin/bash
 PlayName=$(zenity --entry --title="Playlist title?" --text="Title: ")
-PlayLink=$(zenity --entry --title="Please enter the YouTube url" --text="https://www.youtube.com/playlist?list=")
+PlayLink=$(zenity --entry --title="Please enter the YouTube url" --text="Link: ")
 Location=$(zenity --file-selection --directory)
 cd $Location &&
 mkdir $PlayName &&
@@ -19,9 +19,6 @@ zenity --progress \
 if [ "$?" = -1 ] ; then
         zenity --error \
           --text="Download canceled."
-	pkill zenity
-	pkill youtube-dl
-	exit 1
 fi
 cd .. &&
 mkdir Video &&
@@ -38,8 +35,5 @@ zenity --progress \
 if [ "$?" = -1 ] ; then
         zenity --error \
           --text="Download canceled."
-	pkill zenity
-	pkill youtube-dl
-	exit 1
 fi
 zenity --info --text="Success."
