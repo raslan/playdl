@@ -23,7 +23,7 @@ fi
 cd .. &&
 mkdir Video &&
 cd Video &&
-(youtube-dl -c --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' https://www.youtube.com/playlist?list=$PlayLink) |
+(youtube-dl -c -f 'best[filesize<100M]' --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' https://www.youtube.com/playlist?list=$PlayLink) |
 zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching videos from YouTube..." \
