@@ -12,6 +12,8 @@ sha1sums=('SKIP')
 package() {
 	cd "$pkgname"
 	mkdir -p $pkgdir/usr/bin
+	mkdir -p $pkgdir/usr/share/applications
 	install -D -m755 ./playdl $pkgdir/usr/bin/$pkgname
+	install -D -m755 ./Playdl.desktop $pkgdir/usr/share/applications/Playdl.desktop
 }
 
