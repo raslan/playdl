@@ -24,7 +24,7 @@ fi
 cd $VideoLocation &&
 mkdir $PlayName &&
 cd $PlayName &&
-(youtube-dl -c -f 'best' --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' $PlayLink) |
+(youtube-dl -c --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' $PlayLink) |
 zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching videos from YouTube..." \
