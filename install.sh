@@ -1,5 +1,5 @@
 #!/bin/bash
-#mv playdl.sh ~/.local/usr/bin/playdl
-#mv Playdl.desktop ~/.local/share/applications
-#cd ..
-#rm -rf playdl
+install -D -m755 ./playdl /usr/local/bin
+install -D -m755 ./Playdl.desktop /usr/share/applications
+cd ..
+rm -rf playdl
