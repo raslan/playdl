@@ -9,12 +9,9 @@ license=('GPL')
 depends=('python' 'youtube-dl')
 source=("git://github.com/aliraslan/${pkgname}/")
 sha1sums=('SKIP')
-
 package() {
 	cd "$pkgname"
 	mkdir -p $pkgdir/usr/bin
 	install -D -m755 ./playdl $pkgdir/usr/bin/$pkgname
-	cd ..
-	rm -rf $pkgname
-
 }
+
