@@ -19,6 +19,9 @@ zenity --progress \
 if [ "$?" = -1 ] ; then
         zenity --error \
           --text="Download canceled."
+	pkill zenity
+	pkill youtube-dl
+	exit 1
 fi
 cd .. &&
 mkdir Video &&
@@ -35,5 +38,8 @@ zenity --progress \
 if [ "$?" = -1 ] ; then
         zenity --error \
           --text="Download canceled."
+	pkill zenity
+	pkill youtube-dl
+	exit 1
 fi
 zenity --info --text="Success."
