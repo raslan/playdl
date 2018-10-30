@@ -6,7 +6,7 @@ python
 youtube-dl
 zenity
 ```
-### Installation
+### Usage
 ```shell
 git clone https://github.com/aliraslan/playdl
 cd playdl
