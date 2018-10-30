@@ -4,6 +4,7 @@ A Bash script to download YouTube playlists as both videos and high quality audi
 ```
 python
 youtube-dl
+zenity
 ```
 ### Installation
 ```shell
