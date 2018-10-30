@@ -1,12 +1,13 @@
 #!/bin/bash
 PlayName=$(zenity --entry --title="Playlist title?" --text="Title: ")
 PlayLink=$(zenity --entry --title="Please enter the YouTube url" --text="Link: ")
-Location=$(zenity --file-selection --directory)
-cd $Location &&
+zenity --info --text="Please pick the download location for the audio" &&
+AudioLocation=$(zenity --file-selection --directory)
+zenity --info --text="Please pick the download location for the video" &&
+VideoLocation=$(zenity --file-selection --directory)
+cd $AudioLocation &&
 mkdir $PlayName &&
 cd $PlayName &&
-mkdir Audio &&
-cd Audio &&
 (youtube-dl -c -x --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' $PlayLink) |
 zenity --progress \
 	--title="Downloading audio" \
@@ -20,10 +21,10 @@ if [ "$?" = -1 ] ; then
         zenity --error \
           --text="Download canceled."
 fi
-cd .. &&
-mkdir Video &&
-cd Video &&
-(youtube-dl -c -f 'best[filesize<100M]' --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' $PlayLink) |
+cd $VideoLocation &&
+mkdir $PlayName &&
+cd $PlayName &&
+(youtube-dl -c -f 'best' --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' $PlayLink) |
 zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching videos from YouTube..." \
