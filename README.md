@@ -1,19 +1,21 @@
 # playdl
-A Bash script to download YouTube playlists as both videos and high quality audio.
+A Linux program to download YouTube playlists as both videos and high quality audio.
 ### Dependencies
 ```
 python
+atomicparsley
+ffmpeg
 youtube-dl
 zenity
 ```
-### Installation
-```shell
-Archlinux: Through the AUR (coming soon)
-```
-##### Package unavailable for other distros, move into Usage directly.
-### Usage (For non-Arch based distros)
+### Download & Usage
 ```shell
 git clone https://github.com/aliraslan/playdl
 cd playdl
 bash playdl.sh
 ```
+### Installation
+```shell
+Archlinux: Through the AUR (coming soon)
+```
+
