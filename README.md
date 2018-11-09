@@ -3,6 +3,7 @@ A Linux program to download YouTube playlists as both videos and high quality au
 ### Dependencies
 ```
 python
+xterm
 atomicparsley
 ffmpeg
 youtube-dl

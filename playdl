@@ -9,10 +9,10 @@ PlayLink=$(zenity --entry --title="Please enter the YouTube url" --text="Link: "
 cd $AudioLocation
 mkdir $PlayName
 cd $PlayName
-(youtube-dl -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --embed-thumbnail --youtube-skip-dash-manifest -o '%(playlist_index)s-%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
+(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(playlist_index)s-%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
 zenity --progress \
 	--title="Downloading audio" \
-	--text="Fetching files from YouTube..." \
+	--text="Fetching files from YouTube... Close the xterm window to stop the download." \
 	--percentage=0 \
 	--pulsate \
 	--auto-close \
@@ -25,10 +25,10 @@ fi
 cd $VideoLocation
 mkdir $PlayName
 cd $PlayName
-(youtube-dl -c --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][height<=1080][height>=360]+bestaudio' --max-filesize 500M --no-overwrites --add-metadata --metadata-from-title --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(playlist_index)s-%(title)s.%(ext)s' $PlayLink) |
+(xterm -e youtube-dl -i -c --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][height<=1080][height>=360]+bestaudio' --max-filesize 500M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(playlist_index)s-%(title)s.%(ext)s' $PlayLink) |
 zenity --progress \
 	--title="Downloading video" \
-	--text="Fetching video from YouTube..." \
+	--text="Fetching video from YouTube... Close the xterm window to stop the download." \
 	--percentage=0 \
 	--pulsate \
 	--auto-close \
