@@ -1,14 +1,14 @@
 #!/bin/bash
 PlayName=$(zenity --entry --title="Playlist title?" --text="Title: ")
-PlayLink=$(zenity --entry --title="Please enter the YouTube url" --text="Link: ")
-zenity --info --text="Please pick the download location for the audio" &&
+zenity --info --text="Please pick the download location for the audio"
 AudioLocation=$(zenity --file-selection --directory)
-zenity --info --text="Please pick the download location for the video" &&
+zenity --info --text="Please pick the download location for the video"
 VideoLocation=$(zenity --file-selection --directory)
-cd $AudioLocation &&
-mkdir $PlayName &&
-cd $PlayName &&
-(youtube-dl -c -x --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' $PlayLink) |
+PlayLink=$(zenity --entry --title="Please enter the YouTube url" --text="Link: ")
+cd $AudioLocation
+mkdir $PlayName
+cd $PlayName
+(youtube-dl -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --embed-thumbnail --youtube-skip-dash-manifest -o '%(playlist_index)s-%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
 zenity --progress \
 	--title="Downloading audio" \
 	--text="Fetching files from YouTube..." \
@@ -21,10 +21,10 @@ if [ "$?" = -1 ] ; then
         zenity --error \
           --text="Download canceled."
 fi
-cd $VideoLocation &&
-mkdir $PlayName &&
-cd $PlayName &&
-(youtube-dl -c --retries infinite --audio-quality 0 --add-metadata --xattrs -o '%(autonumber)s-%(title)s.%(ext)s' $PlayLink) |
+cd $VideoLocation
+mkdir $PlayName
+cd $PlayName
+(youtube-dl -c --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][height<=1080][height>=360]+bestaudio' --max-filesize 500M --no-overwrites --add-metadata --metadata-from-title --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(playlist_index)s-%(title)s.%(ext)s' $PlayLink) |
 zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching video from YouTube..." \
