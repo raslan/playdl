@@ -6,9 +6,6 @@ AudioLocation=$(zenity --file-selection --directory)
 zenity --info --text="Please pick the download location for the video"
 VideoLocation=$(zenity --file-selection --directory)
 PlayLink=$(zenity --entry --title="Please enter the YouTube url" --text="Link: ")
-MaxVidSize="250M"
-MaxVidSize=$(zenity --entry --title="Please enter the maximum video filesize: (press cancel for the default 250MB)" --text="Size (in megabytes): ")
-MaxVidSize+="M"
 cd $AudioLocation
 mkdir $PlayName
 cd $PlayName
@@ -28,7 +25,7 @@ fi
 cd $VideoLocation
 mkdir $PlayName
 cd $PlayName
-(xterm -e youtube-dl -i -c --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][height<=1080][height>=360]+bestaudio' --max-filesize MaxVidSize --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '0%(playlist_index)s-%(title)s.%(ext)s' $PlayLink) |
+(xterm -e youtube-dl -i -c --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][height<=1080][height>=360]+bestaudio' --max-filesize 250M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '0%(playlist_index)s-%(title)s.%(ext)s' $PlayLink) |
 zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching video from YouTube... Close the xterm window to stop the download." \
