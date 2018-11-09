@@ -1,4 +1,5 @@
 #!/bin/bash
+cd /tmp
 PlayName=$(zenity --entry --title="Playlist title?" --text="Title: ")
 zenity --info --text="Please pick the download location for the audio"
 AudioLocation=$(zenity --file-selection --directory)
