@@ -10,10 +10,11 @@ youtube-dl
 zenity
 ```
 ### Download & Usage
+In your terminal run:
 ```shell
 git clone https://github.com/aliraslan/playdl
 cd playdl
-bash playdl.sh
+bash playdl
 ```
 ### Installation
 ```shell
