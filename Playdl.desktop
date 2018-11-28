@@ -1,11 +1,12 @@
 #!/usr/bin/env xdg-open
-
 [Desktop Entry]
 Version=1.0
 Type=Application
-Terminal=true
-Icon[en_US]=deepin-music-player
+Terminal=false
+Icon[en_US]=goobox
 Name[en_US]=Playdl
 Exec=playdl
-Name=Playlist Downloader
-Icon=deepin-music-player
+Comment[en_US]=Downloads videos and playlists from YouTube in high quality audio and video.
+Name=Playdl
+Comment=Downloads videos and playlists from YouTube in high quality audio and video.
+Icon=goobox
