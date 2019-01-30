@@ -1,7 +1,7 @@
 #!/bin/bash
 DownloadPreference=`zenity --list --title="Playdl Configuration" --column="0" "Video and Audio" "Audio Only" "Video Only" --width=100 --height=300 --hide-header`
 if [ "$DownloadPreference" == "Video and Audio" ]; then
-	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link") accepted=$?
+	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
 	PlayName=$(awk -F, '{print $1}' <<<$Variables)
 	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
 	if [ -z "$PlayName" ]; then
@@ -17,7 +17,7 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	cd $AudioLocation
 	mkdir $PlayName
 	cd $PlayName
-	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(playlist_index)s-%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
+	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
 	zenity --progress \
 	--title="Downloading audio" \
 	--text="Fetching files from YouTube... Close the xterm window to stop the download." \
@@ -28,7 +28,7 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	cd $VideoLocation
 	mkdir $PlayName
 	cd $PlayName
-	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][filesize<80M][height<=1080][height>=360]+bestaudio' --max-filesize 80M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(playlist_index)s-%(title)s.%(ext)s' $PlayLink) |
+	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][filesize<80M][height<=1080][height>=360]+bestaudio' --max-filesize 80M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
 	zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching video from YouTube... Close the xterm window to stop the download." \
@@ -39,7 +39,7 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	notify-send -u low -t 200 -a Playdl "Playdl has finished."
 fi
 if [ "$DownloadPreference" == "Audio Only" ]; then
-	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link") accepted=$?
+	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
 	PlayName=$(awk -F, '{print $1}' <<<$Variables)
 	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
 	if [ -z "$PlayName" ]; then
@@ -53,7 +53,7 @@ if [ "$DownloadPreference" == "Audio Only" ]; then
 	cd $AudioLocation
 	mkdir $PlayName
 	cd $PlayName
-	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(playlist_index)s-%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
+	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
 	zenity --progress \
 	--title="Downloading audio" \
 	--text="Fetching files from YouTube... Close the xterm window to stop the download." \
@@ -65,7 +65,7 @@ if [ "$DownloadPreference" == "Audio Only" ]; then
 fi
 
 if [ "$DownloadPreference" == "Video Only" ]; then
-	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link") accepted=$?
+	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
 	PlayName=$(awk -F, '{print $1}' <<<$Variables)
 	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
 	if [ -z "$PlayName" ]; then
@@ -79,7 +79,7 @@ if [ "$DownloadPreference" == "Video Only" ]; then
 	cd $VideoLocation
 	mkdir $PlayName
 	cd $PlayName
-	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][filesize<80M][height<=1080][height>=360]+bestaudio' --max-filesize 80M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(playlist_index)s-%(title)s.%(ext)s' $PlayLink) |
+	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][filesize<80M][height<=1080][height>=360]+bestaudio' --max-filesize 80M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
 	zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching video from YouTube... Close the xterm window to stop the download." \

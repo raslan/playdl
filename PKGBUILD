@@ -6,7 +6,7 @@ pkgdesc="A Bash script to download YouTube playlists as both videos and high qua
 arch=("any")
 url="https://github.com/aliraslan/playdl"
 license=('GPL')
-depends=('python' 'youtube-dl')
+depends=('python' 'youtube-dl' 'atomicparsely' 'ffmpeg' 'zenity')
 source=("git://github.com/aliraslan/${pkgname}/")
 sha1sums=('SKIP')
 package() {
