@@ -1,10 +1,10 @@
 # Maintainer: Ali Raslan <citizenwebdev@gmail.com>
-pkgname=playdl
-pkgver=0.1
+pkgname=Playdl
+pkgver=1.0
 pkgrel=1
-pkgdesc="A Bash script to download YouTube playlists as both videos and high quality audio."
+pkgdesc="A simple Zenity frontend for youtube-dl."
 arch=("any")
-url="https://github.com/aliraslan/playdl"
+url="https://github.com/aliraslan/Playdl"
 license=('GPL')
 depends=('python' 'youtube-dl' 'atomicparsely' 'ffmpeg' 'zenity')
 source=("git://github.com/aliraslan/${pkgname}/")
@@ -15,5 +15,8 @@ package() {
 	mkdir -p $pkgdir/usr/share/applications
 	install -D -m755 ./playdl $pkgdir/usr/bin/$pkgname
 	install -D -m755 ./Playdl.desktop $pkgdir/usr/share/applications/Playdl.desktop
+	cd ..
+	cd ..
+	rm -r playdl
 }
 
