@@ -16,8 +16,10 @@ git clone https://github.com/aliraslan/playdl
 cd playdl
 bash playdl
 ```
-### Installation
+### Installation (Arch Linux)
 ```shell
-Archlinux: Through the AUR (coming soon)
+git clone https://github.com/aliraslan/playdl
+cd playdl
+makepkg -si
 ```
 
