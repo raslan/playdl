@@ -10,9 +10,9 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	if [ -z "$PlayLink" ]; then
 		exit 1
 	fi
-	zenity --info --text="Please pick the download location for the audio"
+	zenity --info --width=400 --text="Please pick the download location for the audio"
 	AudioLocation=$(zenity --file-selection --directory)
-	zenity --info --text="Please pick the download location for the video"
+	zenity --info --width=400 --text="Please pick the download location for the video"
 	VideoLocation=$(zenity --file-selection --directory)
 	cd $AudioLocation
 	mkdir $PlayName
@@ -48,7 +48,7 @@ if [ "$DownloadPreference" == "Audio Only" ]; then
 	if [ -z "$PlayLink" ]; then
 		exit 1
 	fi
-	zenity --info --text="Please pick the download location for the audio"
+	zenity --info --width=400 --text="Please pick the download location for the audio"
 	AudioLocation=$(zenity --file-selection --directory)
 	cd $AudioLocation
 	mkdir $PlayName
@@ -74,7 +74,7 @@ if [ "$DownloadPreference" == "Video Only" ]; then
 	if [ -z "$PlayLink" ]; then
 		exit 1
 	fi
-	zenity --info --text="Please pick the download location for the video"
+	zenity --info --width=400 --text="Please pick the download location for the video"
 	VideoLocation=$(zenity --file-selection --directory)
 	cd $VideoLocation
 	mkdir $PlayName
