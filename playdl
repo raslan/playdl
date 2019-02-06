@@ -28,7 +28,7 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	cd $VideoLocation
 	mkdir $PlayName
 	cd $PlayName
-	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][filesize<80M][height<=1080][height>=360]+bestaudio' --max-filesize 80M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
+	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 --max-filesize 100M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
 	zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching video from YouTube... Close the xterm window to stop the download." \
@@ -79,7 +79,7 @@ if [ "$DownloadPreference" == "Video Only" ]; then
 	cd $VideoLocation
 	mkdir $PlayName
 	cd $PlayName
-	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 -f 'bestvideo[ext=mp4][filesize<80M][height<=1080][height>=360]+bestaudio' --max-filesize 80M --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
+	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --write-auto-sub --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
 	zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching video from YouTube... Close the xterm window to stop the download." \
