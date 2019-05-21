@@ -6,7 +6,7 @@ pkgdesc="A simple Zenity frontend for youtube-dl."
 arch=("any")
 url="https://github.com/aliraslan/Playdl"
 license=('GPL')
-depends=('python' 'youtube-dl' 'atomicparsley' 'ffmpeg' 'zenity')
+depends=('python' 'youtube-dl' 'atomicparsley' 'ffmpeg' 'zenity' 'xterm')
 source=("git://github.com/aliraslan/Playdl/")
 sha1sums=('SKIP')
 package() {
