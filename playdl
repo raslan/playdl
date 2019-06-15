@@ -1,5 +1,5 @@
 #!/bin/bash
-DownloadPreference=`zenity --list --title="Playdl Configuration" --column="0" "Video and Audio" "Audio Only" "Video Only" --width=100 --height=300 --hide-header`
+DownloadPreference=`zenity --list --title="Playdl Configuration" --column="0" "Video and Audio" "Audio Only" "Video Only" "Uninstall (Ubuntu Only)" --width=100 --height=300 --hide-header`
 if [ "$DownloadPreference" == "Video and Audio" ]; then
 	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
 	PlayName=$(awk -F, '{print $1}' <<<$Variables)
@@ -87,6 +87,10 @@ if [ "$DownloadPreference" == "Video Only" ]; then
 	--pulsate \
 	--auto-close \
 	--auto-kill
+fi
+if [ "$DownloadPreference" == "Uninstall (Ubuntu Only)" ]; then
+sudo rm /usr/bin/playdl
+sudo rm /usr/share/applications/Playdl.desktop
 fi
 if [ -n "$DownloadPreference" ]; then
 		exit 1
