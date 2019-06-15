@@ -15,8 +15,8 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	zenity --info --width=400 --text="Please pick the download location for the video"
 	VideoLocation=$(zenity --file-selection --directory)
 	cd $AudioLocation
-	mkdir $PlayName
-	cd $PlayName
+	mkdir "$PlayName"
+	cd "$PlayName"
 	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
 	zenity --progress \
 	--title="Downloading audio" \
@@ -26,8 +26,8 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	--auto-close \
 	--auto-kill
 	cd $VideoLocation
-	mkdir $PlayName
-	cd $PlayName
+	mkdir "$PlayName"
+	cd "$PlayName"
 	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
 	zenity --progress \
 	--title="Downloading video" \
@@ -51,8 +51,8 @@ if [ "$DownloadPreference" == "Audio Only" ]; then
 	zenity --info --width=400 --text="Please pick the download location for the audio"
 	AudioLocation=$(zenity --file-selection --directory)
 	cd $AudioLocation
-	mkdir $PlayName
-	cd $PlayName
+	mkdir "$PlayName"
+	cd "$PlayName"
 	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
 	zenity --progress \
 	--title="Downloading audio" \
@@ -77,8 +77,8 @@ if [ "$DownloadPreference" == "Video Only" ]; then
 	zenity --info --width=400 --text="Please pick the download location for the video"
 	VideoLocation=$(zenity --file-selection --directory)
 	cd $VideoLocation
-	mkdir $PlayName
-	cd $PlayName
+	mkdir "$PlayName"
+	cd "$PlayName"
 	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
 	zenity --progress \
 	--title="Downloading video" \
