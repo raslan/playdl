@@ -13,7 +13,7 @@ youtube-dl
 zenity
 ```
 
-### Download & Usage
+### Download & Basic Usage
 
 In your terminal run:
 
@@ -31,7 +31,7 @@ cd playdl
 makepkg -si
 ```
 
-### Installation (Arch Linux)
+### Unpackaged Installation (Ubuntu)
 
 ```shell
 git clone https://github.com/aliraslan/playdl
