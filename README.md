@@ -2,7 +2,7 @@
 
 A Linux program to download YouTube playlists as both videos and high quality audio.
 
-### Dependencies
+### Dependencies (Only for manual use.)
 
 ```
 python
