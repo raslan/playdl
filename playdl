@@ -1,7 +1,6 @@
 #!/bin/bash
 DownloadPreference=`zenity --list --title="Playdl Configuration" --column="0" "Video and Audio" "Audio Only" "Video Only" "Uninstall (Ubuntu Only)" --width=100 --height=300 --hide-header`
-if [ "$DownloadPreference" == "Video and Audio" ]; then
-	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
+Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
 	PlayName=$(awk -F, '{print $1}' <<<$Variables)
 	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
 	if [ -z "$PlayName" ]; then
@@ -10,10 +9,15 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	if [ -z "$PlayLink" ]; then
 		exit 1
 	fi
+LocateAudio() {
 	zenity --info --width=400 --text="Please pick the download location for the audio"
 	AudioLocation=$(zenity --file-selection --directory)
+}
+LocateVideo() {
 	zenity --info --width=400 --text="Please pick the download location for the video"
 	VideoLocation=$(zenity --file-selection --directory)
+}
+AudioMode () {
 	cd $AudioLocation
 	mkdir "$PlayName"
 	cd "$PlayName"
@@ -25,6 +29,9 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	--pulsate \
 	--auto-close \
 	--auto-kill
+
+}
+VideoMode() {
 	cd $VideoLocation
 	mkdir "$PlayName"
 	cd "$PlayName"
@@ -36,57 +43,16 @@ if [ "$DownloadPreference" == "Video and Audio" ]; then
 	--pulsate \
 	--auto-close \
 	--auto-kill
-	notify-send -u low -t 200 -a Playdl "Playdl has finished."
+}
+if [ "$DownloadPreference" == "Video and Audio" ]; then
+	LocateAudio && LocateVideo && AudioMode && VideoMode	
 fi
 if [ "$DownloadPreference" == "Audio Only" ]; then
-	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
-	PlayName=$(awk -F, '{print $1}' <<<$Variables)
-	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
-	if [ -z "$PlayName" ]; then
-		exit 1
-	fi
-	if [ -z "$PlayLink" ]; then
-		exit 1
-	fi
-	zenity --info --width=400 --text="Please pick the download location for the audio"
-	AudioLocation=$(zenity --file-selection --directory)
-	cd $AudioLocation
-	mkdir "$PlayName"
-	cd "$PlayName"
-	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
-	zenity --progress \
-	--title="Downloading audio" \
-	--text="Fetching files from YouTube... Close the xterm window to stop the download." \
-	--percentage=0 \
-	--pulsate \
-	--auto-close \
-	--auto-kill
-	notify-send -u low -t 200 -a Playdl "Playdl has finished."
+	LocateAudio && AudioMode
 fi
 
 if [ "$DownloadPreference" == "Video Only" ]; then
-	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
-	PlayName=$(awk -F, '{print $1}' <<<$Variables)
-	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
-	if [ -z "$PlayName" ]; then
-		exit 1
-	fi
-	if [ -z "$PlayLink" ]; then
-		exit 1
-	fi
-	zenity --info --width=400 --text="Please pick the download location for the video"
-	VideoLocation=$(zenity --file-selection --directory)
-	cd $VideoLocation
-	mkdir "$PlayName"
-	cd "$PlayName"
-	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
-	zenity --progress \
-	--title="Downloading video" \
-	--text="Fetching video from YouTube... Close the xterm window to stop the download." \
-	--percentage=0 \
-	--pulsate \
-	--auto-close \
-	--auto-kill
+	LocateVideo && VideoMode
 fi
 if [ "$DownloadPreference" == "Uninstall (Ubuntu Only)" ]; then
 sudo rm /usr/bin/playdl
@@ -95,3 +61,4 @@ fi
 if [ -n "$DownloadPreference" ]; then
 		exit 1
 fi
+notify-send -u low -t 200 -a Playdl "Playdl has finished."
