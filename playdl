@@ -1,5 +1,8 @@
 #!/bin/bash
 DownloadPreference=`zenity --list --title="Playdl Configuration" --column="0" "Video and Audio" "Audio Only" "Video Only" "Uninstall (Ubuntu Only)" --width=100 --height=300 --hide-header`
+if [ -n "$DownloadPreference" ]; then
+		exit 1
+fi
 Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
 	PlayName=$(awk -F, '{print $1}' <<<$Variables)
 	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
@@ -57,8 +60,5 @@ fi
 if [ "$DownloadPreference" == "Uninstall (Ubuntu Only)" ]; then
 sudo rm /usr/bin/playdl
 sudo rm /usr/share/applications/Playdl.desktop
-fi
-if [ -n "$DownloadPreference" ]; then
-		exit 1
 fi
 notify-send -u low -t 200 -a Playdl "Playdl has finished."
