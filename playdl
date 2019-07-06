@@ -24,9 +24,9 @@ LocateVideo() {
 }
 AudioMode () {
 	cd $AudioLocation
-	mkdir "$PlayName"
+	[ -d "$PlayName" ] || mkdir "$PlayName"
 	cd "$PlayName"
-	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
+	(xterm -e youtube-dl -i -c --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
 	zenity --progress \
 	--title="Downloading audio" \
 	--text="Fetching files from YouTube... Close the xterm window to stop the download." \
@@ -38,9 +38,9 @@ AudioMode () {
 }
 VideoMode() {
 	cd $VideoLocation
-	mkdir "$PlayName"
+	[ -d "$PlayName" ] || mkdir "$PlayName"
 	cd "$PlayName"
-	(xterm -e youtube-dl -i -c --write-srt --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
+	(xterm -e youtube-dl -i -c --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" --write-srt --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
 	zenity --progress \
 	--title="Downloading video" \
 	--text="Fetching video from YouTube... Close the xterm window to stop the download." \
