@@ -1,6 +1,6 @@
 # Maintainer: Ali Raslan <citizenwebdev@gmail.com>
 pkgname=playdl
-pkgver=1.0
+pkgver=1.0.3
 pkgrel=1
 pkgdesc="A simple Zenity frontend for youtube-dl."
 arch=("any")
