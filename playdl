@@ -3,6 +3,7 @@ DownloadPreference=`zenity --list --title="Playdl Configuration" --column="0" "V
 if [ -n "$DownloadPreference" ]; then
 		exit 1
 fi
+YouTubeVariables() {
 Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
 	PlayName=$(awk -F, '{print $1}' <<<$Variables)
 	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
@@ -12,6 +13,7 @@ Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video informa
 	if [ -z "$PlayLink" ]; then
 		exit 1
 	fi
+}
 LocateAudio() {
 	zenity --info --width=400 --text="Please pick the download location for the audio"
 	AudioLocation=$(zenity --file-selection --directory)
@@ -48,14 +50,14 @@ VideoMode() {
 	--auto-kill
 }
 if [ "$DownloadPreference" == "Video and Audio" ]; then
-	LocateAudio && LocateVideo && AudioMode && VideoMode	
+	YouTubeVariables && LocateAudio && LocateVideo && AudioMode && VideoMode	
 fi
 if [ "$DownloadPreference" == "Audio Only" ]; then
-	LocateAudio && AudioMode
+	YouTubeVariables && LocateAudio && AudioMode
 fi
 
 if [ "$DownloadPreference" == "Video Only" ]; then
-	LocateVideo && VideoMode
+	YouTubeVariables && LocateVideo && VideoMode
 fi
 if [ "$DownloadPreference" == "Uninstall (Ubuntu Only)" ]; then
 sudo rm /usr/bin/playdl
