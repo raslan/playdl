@@ -24,7 +24,7 @@ GetYouTubeVariables() {
 }
 GetQuality() {
 	## Ask user for video quality
-	DownloadQuality=$(zenity --list --title="Playdl Quality Selection" --column="0" 360 480 720 1080 --width=100 --height=400 --hide-header)
+	DownloadQuality=$(zenity --list --title="Playdl Quality Selection" --column="0" 360 480 720 1080 2160 --width=100 --height=400 --hide-header)
 	## Format the string for youtube-dl
 	Quality="bestvideo[height<=$DownloadQuality]+bestaudio[ext=m4a]"
 }
