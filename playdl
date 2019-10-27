@@ -84,11 +84,13 @@ if [ "$DownloadPreference" == "Video Only" ]; then
 	GetYouTubeVariables && GetQuality && LocateVideo && VideoMode
 fi
 if [ "$DownloadPreference" == "Update (Arch Linux)" ]; then
-cd /tmp
-git clone https://github.com/aliraslan/playdl
-cd playdl
-makepkg -si
-cd ..
-rm -rf playdl
+rm -rf /tmp/playdl 
+cd /tmp 
+git clone https://github.com/aliraslan/playdl 
+cd playdl 
+makepkg -s
+sudo pacman -U --noconfirm ./*.pkg.tar.xz
+cd .. 
+rm -rf /tmp/playdl
 fi
 notify-send -u low -t 200 -a Playdl "Playdl has finished."
