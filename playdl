@@ -27,7 +27,7 @@ GetYouTubeVariables() {
 }
 GetQuality() {
 	## Ask user for video quality
-	echo -e "Please pick your video quality: \n The default is 4K \n 1) 360p \n 2) 480p \n 3)720p \n 4) 1080p \n 5) 1440p \n 6) 4K"
+	echo -e "Please pick your video quality: \n The default is 4K \n 1) 360p \n 2) 480p \n 3) 720p \n 4) 1080p \n 5) 1440p \n 6) 4K"
 	echo "Choice (1, 2, 3, 4, 5, 6): "
 	read QualitySelection
 	case $QualitySelection in
