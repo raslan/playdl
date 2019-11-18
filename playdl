@@ -1,19 +1,22 @@
 #!/bin/bash
-
 ## Program Initialization, Playdl asks the user for their preference.
-DownloadPreference=$(zenity --list --title="Playdl Configuration" --column="0" "Video and Audio" "Audio Only" "Video Only" "Update (Arch Linux)" --width=100 --height=400 --hide-header)
-## Check for valid choice
-if [ -z "$DownloadPreference" ]; then
-		exit 1
-fi
+echo -e "Welcome to Playdl!"
+echo -e "Please pick your download preference:\n
+1) Video and Audio\n
+2) Audio Only\n
+3) Video Only\n
+4) Update (Arch Linux)\n"
+echo -e "Selection (1, 2, 3, 4): "
+read selectedOption
+
 ## Core Functions
 GetYouTubeVariables() {
-	## This function collects the needed variables from the user about the video/playlist being downloaded
-	Variables=$(zenity --forms --title="Playdl" --text="Enter playlist/video information" --separator="," --add-entry="Playlist Title" --add-entry="Link" --width=100 --height=300) accepted=$?
-	## Cut the first part of the input to obtain the name
-	PlayName=$(awk -F, '{print $1}' <<<$Variables)
+	echo "Please enter the information: "
+	echo "Video/playlist name: "
+	read PlayName
 	## And the second to get the link
-	PlayLink=$(awk -F, '{print $2}' <<<$Variables)
+	echo "Video/playlist link (press Ctrl + Shift + V to paste in the terminal):"
+	read PlayLink
 	## Check that user input the correct values
 	if [ -z "$PlayName" ]; then
 		exit 1
@@ -24,73 +27,99 @@ GetYouTubeVariables() {
 }
 GetQuality() {
 	## Ask user for video quality
-	DownloadQuality=$(zenity --list --title="Playdl Quality Selection" --column="0" 360 480 720 1080 2160 --width=100 --height=400 --hide-header)
+	echo -e "Please pick your video quality: \n The default is 4K \n 1) 360p \n 2) 480p \n 3)720p \n 4) 1080p \n 5) 1440p \n 6) 4K"
+	echo "Choice (1, 2, 3, 4, 5, 6): "
+	read QualitySelection
+	case $QualitySelection in
+		"1")
+		DownloadQuality="360"
+		;; 
+		"2")
+		DownloadQuality="480"
+		;; 
+		"3")
+		DownloadQuality="720"
+		;; 
+		"4")
+		DownloadQuality="1080"
+		;; 
+		"5")
+		DownloadQuality="1440"
+		;; 
+		"6")
+		DownloadQuality="2160"
+		;; 
+		*)
+		DownloadQuality="2160"
+		;; 
+		esac
 	## Format the string for youtube-dl
 	Quality="bestvideo[height<=$DownloadQuality]+bestaudio[ext=m4a]"
 }
 LocateAudio() {
-	## Ask the user for where to download the audio files
-	zenity --info --width=400 --text="Please pick the download location for the audio"
-	## Set the location
-	AudioLocation=$(zenity --file-selection --directory)
+	echo -e "Please pick the download location for the audio files:\n A new folder will be created here and the files will be placed in it (Press q to exit when you reach the folder you want)\n Press Enter to Continue"
+	read
+	ranger -c --show-only-dirs --choosedir=audioout /
+	AudioLocation=$(cat audioout)
+	rm audioout
 }
 LocateVideo() {
-	## Ask the user for where to download the video files
-	zenity --info --width=400 --text="Please pick the download location for the video"
+	echo -e "Please pick the download location for the video files:\n A new folder will be created here and the files will be placed in it (Press q to exit when you reach the folder you want)\n Press Enter to Continue"
+	read
 	## Set the location
-	VideoLocation=$(zenity --file-selection --directory)
+	ranger -c --show-only-dirs --choosedir=videoout /
+	VideoLocation=$(cat videoout)
+	rm videoout
 }
 AudioMode () {
 	## Create folder in the destination, or use existing folder.
 	cd $AudioLocation
 	[ -d "$PlayName" ] || mkdir "$PlayName"
 	cd "$PlayName"
-	## Base code, downloads the audio directly in xterm and pipes it through ffmpeg to upscale it, then pipes the whole command to zenity for a progress bar
-	(xterm -e youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {}  -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink) |
-	zenity --progress \
-	--title="Downloading audio" \
-	--text="Fetching files from YouTube... Close the xterm window to stop the download." \
-	--percentage=0 \
-	--pulsate \
-	--auto-close \
-	--auto-kill
-
+	youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --newline --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {} -loglevel panic -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink | pv -l -N "Playdl is downloading" > /dev/null
 }
 VideoMode() {
 	cd $VideoLocation
 	[ -d "$PlayName" ] || mkdir "$PlayName"
 	cd "$PlayName"
-	## Base code, downloads the video, then pipes the whole command to zenity for a progress bar
-	(xterm -e youtube-dl -i -c --write-srt -f $Quality --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink) |
-	zenity --progress \
-	--title="Downloading video" \
-	--text="Fetching video from YouTube... Close the xterm window to stop the download." \
-	--percentage=0 \
-	--pulsate \
-	--auto-close \
-	--auto-kill
+	## Base code, downloads the video
+	youtube-dl -i -c --write-srt -f $Quality --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --newline --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink | pv -l -N "Playdl is downloading" > /dev/null
 }
-if [ "$DownloadPreference" == "Video and Audio" ]; then
-	## Driver functionality
-	GetYouTubeVariables && GetQuality && LocateAudio && LocateVideo && AudioMode && VideoMode
-fi
-if [ "$DownloadPreference" == "Audio Only" ]; then
-	## Driver functionality
-	GetYouTubeVariables && LocateAudio && AudioMode
-fi
 
-if [ "$DownloadPreference" == "Video Only" ]; then
-	## Driver functionality
-	GetYouTubeVariables && GetQuality && LocateVideo && VideoMode
-fi
-if [ "$DownloadPreference" == "Update (Arch Linux)" ]; then
-rm -rf /tmp/playdl 
-cd /tmp 
-git clone https://github.com/aliraslan/playdl 
-cd playdl 
-makepkg -s
-sudo pacman -U --noconfirm ./*.pkg.tar.xz
-cd .. 
-rm -rf /tmp/playdl
-fi
-notify-send -u low -t 200 -a Playdl "Playdl has finished."
+case $selectedOption in 
+	"1")
+		GetYouTubeVariables && 
+		GetQuality && 
+		LocateAudio && 
+		LocateVideo &&
+		AudioMode &&
+		VideoMode
+	;;
+	"2")
+		GetYouTubeVariables && 
+		LocateAudio && 
+		AudioMode
+	;;
+	"3")
+		GetYouTubeVariables && 
+		GetQuality && 
+		LocateVideo && 
+		VideoMode
+	;;
+	"4")
+		## Updates Playdl on Arch Linux
+		rm -rf /tmp/playdl 
+		cd /tmp 
+		git clone https://github.com/aliraslan/playdl 
+		cd playdl 
+		makepkg -s
+		sudo pacman -U --noconfirm ./*.pkg.tar.xz
+		cd .. 
+		rm -rf /tmp/playdl
+		;;
+		*)
+		## Invalid choice
+		echo "Oops"
+		exit 1
+	;;
+esac
