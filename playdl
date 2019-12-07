@@ -76,14 +76,14 @@ AudioMode () {
 	cd $AudioLocation
 	[ -d "$PlayName" ] || mkdir "$PlayName"
 	cd "$PlayName"
-	youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --newline --embed-thumbnail --youtube-skip-dash-manifest -o '%(title)s.%(ext)s' --exec "ffmpeg -i {} -loglevel panic -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink | pv -l -N "Playdl is downloading" > /dev/null
+	youtube-dl -i -c -x --retries infinite -f 'bestaudio[ext=m4a]' --audio-quality 0 --no-overwrites --add-metadata --newline --embed-thumbnail --youtube-skip-dash-manifest -o '%(playlist_index)s - %(title)s.%(ext)s' --exec "ffmpeg -i {} -loglevel panic -codec:a libmp3lame -qscale:a 0 {}.mp3 && rm {} " $PlayLink | pv -l -N "Playdl is downloading" > /dev/null
 }
 VideoMode() {
 	cd $VideoLocation
 	[ -d "$PlayName" ] || mkdir "$PlayName"
 	cd "$PlayName"
 	## Base code, downloads the video
-	youtube-dl -i -c --write-srt -f $Quality --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --newline --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(title)s.%(ext)s' $PlayLink | pv -l -N "Playdl is downloading" > /dev/null
+	youtube-dl -i -c --write-srt -f $Quality --sub-lang en --retries infinite --audio-quality 0 --no-overwrites --add-metadata --newline --youtube-skip-dash-manifest --embed-thumbnail --embed-subs -o '%(playlist_index)s - %(title)s.%(ext)s' $PlayLink | pv -l -N "Playdl is downloading" > /dev/null
 }
 
 case $selectedOption in 
