@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ## Program Initialization, Playdl asks the user for their preference.
 DownloadPreference=$(zenity --list --title="Playdl Configuration" --column="0" "Video and Audio" "Audio Only" "Video Only" "Update (Arch Linux)" --width=100 --height=400 --hide-header)
