@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ## Program Initialization, Playdl asks the user for their preference.
 echo -e "Welcome to Playdl!"
 echo -e "Please pick your download preference:\n
