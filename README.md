@@ -30,11 +30,3 @@ git clone https://github.com/aliraslan/playdl
 cd playdl
 makepkg -si
 ```
-
-### Unpackaged Installation (Ubuntu)
-
-```shell
-git clone https://github.com/aliraslan/playdl
-cd playdl
-bash ubuntu.sh
-```
